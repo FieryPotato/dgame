@@ -55,6 +55,17 @@ def update_game(name: str, version: str, exe_path: str, exe_type: str):
         session.commit()
 
 
+def get_game(name: str) -> Game:
+    with sqlalchemy.orm.Session(sql_engine()) as session:
+        statement = sqlalchemy.select(Game).where(Game.name == name)
+        game = session.scalar(statement).one()
+    return game
+
+
+def remove_game(name: str) -> None:
+    with sqlalchemy.orm.Session(sql_engine()) as session:
+        game = get_game(name)
+        session.delete(game)
 
 
 if not DB_PATH.exists():

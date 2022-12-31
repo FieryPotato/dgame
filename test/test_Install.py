@@ -14,8 +14,8 @@ from pathlib import Path
 import Install
 
 
-class TestInstallerFunctions:
-    def test_installer_asks_for_file(self, monkeypatch) -> None:
+class TestInstallFunctions:
+    def test_installer_asks_for_path_to_file(self, monkeypatch) -> None:
         expected = Path('test/path')
         monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **_: expected)
 

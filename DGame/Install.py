@@ -1,8 +1,8 @@
 from pathlib import Path
 from tkinter import filedialog as fd
-from typing import Protocol
 
 import Database
+import Unzip
 
 from Unzip import Unzipper
 
@@ -12,16 +12,9 @@ def get_path() -> Path:
     return Path(path)
 
 
-class Installer(Protocol):
-    path: Path
-    name: str
-    version: str
-    unzipper: Unzipper
-
-
-class AppInstaller:
+class Installer:
     def __init__(self, path: Path, name: str, version: str):
         self.path = path
         self.name = name
         self.version = version
-        self.unzipper = get_unzipper()
+        self.unzipper: Unzipper = Unzip.get_unzipper(path)

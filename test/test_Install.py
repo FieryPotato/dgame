@@ -15,10 +15,16 @@ import Install
 
 
 class TestInstallFunctions:
-    def test_installer_asks_for_path_to_file(self, monkeypatch) -> None:
+    def test_get_path(self, monkeypatch) -> None:
         expected = Path('test/path')
         monkeypatch.setattr('tkinter.filedialog.askopenfilename', lambda **_: expected)
 
         actual = Install.get_path()
 
         assert actual == expected
+
+
+class TestInstaller:
+    def test_installer_app(self) -> None:
+        pass
+

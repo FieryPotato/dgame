@@ -3,6 +3,9 @@ from pathlib import Path
 import Unzip
 
 
+MOCKS = Path('mocks/Unzip')
+
+
 def rm_tree(files):
     for file in files:
         if file.is_dir():
@@ -33,11 +36,10 @@ class TestUnzipFunctions:
 
 
 class TestZipUnzipper:
-    mocks = Path('mocks')
-    fake_zip = mocks / 'fake_zip'
+    fake_zip = MOCKS / 'fake_zip'
     fake_text = fake_zip / 'fake_text.txt'
     fake_rdme = fake_zip / 'fake_readme.md'
-    zip_file = mocks / 'fake_archive.zip'
+    zip_file = MOCKS / 'fake_archive.zip'
 
     def teardown_method(self, test_method):
         if self.fake_zip.exists():
@@ -54,11 +56,10 @@ class TestZipUnzipper:
 
 
 class TestDirUnzipper:
-    mocks = Path('mocks')
-    fake_dir = mocks / 'fake_dir'
+    fake_dir = MOCKS / 'fake_dir'
     fake_text = fake_dir / 'fake_text.txt'
     fake_rdme = fake_dir / 'fake_readme.md'
-    dir_file = mocks / 'fake_directory'
+    dir_file = MOCKS / 'fake_directory'
 
     def teardown_method(self, test_method):
         if self.fake_dir.exists():
@@ -75,9 +76,8 @@ class TestDirUnzipper:
 
 
 class TestAppUnzipper:
-    mocks = Path('mocks')
-    fake_app = mocks / 'fake_app.app'
-    app_file = mocks / 'fake_application.app'
+    fake_app = MOCKS / 'fake_app.app'
+    app_file = MOCKS / 'fake_application.app'
 
     def teardown_method(self, test_method):
         if self.fake_app.exists():

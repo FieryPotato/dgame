@@ -3,8 +3,12 @@ from pathlib import Path
 import sqlalchemy.orm
 
 
+USR: Path = Path('/Users/adrian.mac')
+GAMES: Path = USR / 'Games'
+DOWNLOADS: Path = USR / 'Downloads'
+DB_PATH: Path = GAMES / 'games.db'
+
 Base = sqlalchemy.orm.declarative_base()
-DB_PATH = Path.cwd() / 'games.db'
 ENGINE_PATH = 'sqlite:///' + str(DB_PATH)
 
 
@@ -26,4 +30,6 @@ def engine():
 
 
 if not DB_PATH.exists():
+    if not GAMES.exists():
+        GAMES.mkdir()
     Base.metadata.create_all(engine())

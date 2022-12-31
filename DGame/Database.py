@@ -41,7 +41,24 @@ def add_game(name: str, version: str, exe_path: str, exe_type: str) -> None:
         session.commit()
 
 
+def update_game(name: str, version: str, exe_path: str, exe_type: str):
+    with sqlalchemy.orm.Session(sql_engine()) as session:
+        statement = sqlalchemy.select(Game).where(Game.name == name)
+        game = session.scalar(statement).one()
+
+        # Push new values into game row
+        game.name = name
+        game.version = version
+        game.exe_path = exe_path
+        game.exe_type = exe_type
+
+        session.commit()
+
+
+
+
 if not DB_PATH.exists():
     if not GAMES.exists():
         GAMES.mkdir()
     Base.metadata.create_all(sql_engine())
+

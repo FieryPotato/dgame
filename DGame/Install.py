@@ -1,14 +1,27 @@
 from pathlib import Path
 from tkinter import filedialog as fd
+from typing import Protocol
+
+import Database
+
+from Unzip import Unzipper
 
 
-class Installer:
-    def __init__(self):
-        self.game_name: str | None = None
-        self.file_name: Path | None = None
+def get_path() -> Path:
+    path: str = fd.askopenfilename(initialdir=Database.DOWNLOADS)
+    return Path(path)
 
-    def get_file_name(self):
-        self.file_name = Path(fd.askopenfilename())
 
-    def get_game_name(self):
-        self.game_name = input(f'Please input game name.\n>')
+class Installer(Protocol):
+    path: Path
+    name: str
+    version: str
+    unzipper: Unzipper
+
+
+class AppInstaller:
+    def __init__(self, path: Path, name: str, version: str):
+        self.path = path
+        self.name = name
+        self.version = version
+        self.unzipper = get_unzipper()

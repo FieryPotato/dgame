@@ -1,9 +1,10 @@
 import os
+import shutil
 from pathlib import Path
 from tkinter import filedialog as fd
+from typing import Protocol
 
 import Database
-import Unzip
 
 
 class Installer:
@@ -13,7 +14,7 @@ class Installer:
         self.path = path
         self.name = name
         self.version = version
-        self.unzipper: Unzip.Unzipper = Unzip.get_unzipper(path)
+        self.unzipper: Unzipper = get_unzipper(path)
         self.dst = Database.GAMES / self.name
 
     def install(self) -> None:
@@ -38,3 +39,43 @@ def get_path() -> Path:
 
 def get_installer(path: Path, name: str, version: str) -> Installer:
     return Installer(path=path, name=name, version=version)
+
+
+class Unzipper(Protocol):
+    src: Path
+
+    def unzip(self, dst: Path) -> None:
+        """
+        Unzip self.src to dst.
+
+        src is a zip file or directory.
+        dst is the directory into which everything is unzipped.
+        """
+        ...
+
+
+def get_unzipper(src: Path) -> Unzipper:
+    file_types = {
+        '.zip': ZipUnzipper
+    }
+    if (suffix := src.suffix) in file_types:
+        unzipper = file_types[suffix]
+    else:
+        unzipper = DirUnzipper
+    return unzipper(src=src)
+
+
+class DirUnzipper:
+    def __init__(self, src: Path):
+        self.src = src
+
+    def unzip(self, dst: Path) -> None:
+        shutil.copytree(src=self.src, dst=dst, dirs_exist_ok=True)
+
+
+class ZipUnzipper:
+    def __init__(self, src: Path):
+        self.src = src
+
+    def unzip(self, dst: Path) -> None:
+        shutil.unpack_archive(filename=self.src, extract_dir=dst)

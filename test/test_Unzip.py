@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import Unzip
+import Install
 
 
 MOCKS = Path('mocks/Unzip')
@@ -18,20 +18,20 @@ def rm_tree(files):
 class TestUnzipFunctions:
     def test_get_unzipper_for_zip(self) -> None:
         path = Path('anything.zip')
-        actual = Unzip.get_unzipper(src=path)
-        assert type(actual) == Unzip.ZipUnzipper
+        actual = Install.get_unzipper(src=path)
+        assert type(actual) == Install.ZipUnzipper
         assert actual.src == path
 
     def test_get_unzipper_for_dir(self) -> None:
         path = Path('path/to/whatever')
-        actual = Unzip.get_unzipper(src=path)
-        assert type(actual) == Unzip.DirUnzipper
+        actual = Install.get_unzipper(src=path)
+        assert type(actual) == Install.DirUnzipper
         assert actual.src == path
 
     def test_get_unzipper_for_app(self) -> None:
         path = Path('myApp.app')
-        actual = Unzip.get_unzipper(path)
-        assert type(actual) == Unzip.DirUnzipper
+        actual = Install.get_unzipper(path)
+        assert type(actual) == Install.DirUnzipper
         assert actual.src == path
 
 
@@ -47,7 +47,7 @@ class TestZipUnzipper:
             self.fake_zip.rmdir()
 
     def test_unzip(self):
-        unzipper = Unzip.ZipUnzipper(src=self.zip_file)
+        unzipper = Install.ZipUnzipper(src=self.zip_file)
         unzipper.unzip(self.fake_zip)
 
         assert self.fake_zip.exists()
@@ -55,7 +55,7 @@ class TestZipUnzipper:
         assert self.fake_rdme.exists()
 
     def test_unzip_allows_overwriting(self):
-        unzipper = Unzip.ZipUnzipper(src=self.zip_file)
+        unzipper = Install.ZipUnzipper(src=self.zip_file)
         unzipper.unzip(self.fake_zip)
         unzipper.unzip(self.fake_zip)
 
@@ -76,7 +76,7 @@ class TestDirUnzipper:
             self.fake_dir.rmdir()
 
     def test_unzip(self):
-        unzipper = Unzip.DirUnzipper(src=self.dir_file)
+        unzipper = Install.DirUnzipper(src=self.dir_file)
         unzipper.unzip(self.fake_dir)
 
         assert self.fake_dir.exists()
@@ -84,7 +84,7 @@ class TestDirUnzipper:
         assert self.fake_rdme.exists()
 
     def test_unzip_allows_overwriting(self):
-        unzipper = Unzip.DirUnzipper(src=self.dir_file)
+        unzipper = Install.DirUnzipper(src=self.dir_file)
         unzipper.unzip(self.fake_dir)
         unzipper.unzip(self.fake_dir)
 
@@ -106,7 +106,7 @@ class TestAppUnzipper:
             self.fake_app.rmdir()
 
     def test_unzip(self):
-        unzipper = Unzip.DirUnzipper(src=self.app_file)
+        unzipper = Install.DirUnzipper(src=self.app_file)
         unzipper.unzip(self.fake_app)
 
         assert self.fake_app.exists()
@@ -115,7 +115,7 @@ class TestAppUnzipper:
         assert self.fake_zip.exists()
 
     def test_unzip_allows_overwriting(self):
-        unzipper = Unzip.DirUnzipper(src=self.app_file)
+        unzipper = Install.DirUnzipper(src=self.app_file)
         unzipper.unzip(self.fake_app)
         unzipper.unzip(self.fake_app)
 

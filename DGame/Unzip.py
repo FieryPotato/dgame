@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 from typing import Protocol
 
@@ -6,12 +7,18 @@ class Unzipper(Protocol):
     src: Path
 
     def unzip(self, dst: Path) -> None:
-        """Unzip self.src to self.dst"""
+        """
+        Unzip self.src to dst.
+
+        src is a zip file or directory.
+        dst is the directory into which everything is unzipped.
+        """
         ...
 
 
 def get_unzipper(src: Path) -> Unzipper:
     file_types = {
+        '.app': AppUnzipper,
         '.zip': ZipUnzipper
     }
     if (suffix := src.suffix) in file_types:
@@ -21,12 +28,12 @@ def get_unzipper(src: Path) -> Unzipper:
     return unzipper(src=src)
 
 
-class ZipUnzipper:
+class AppUnzipper:
     def __init__(self, src: Path):
         self.src = src
 
-    def unzip(self, dst: Path) -> None:
-        return
+    def unzip(self) -> None:
+        pass
 
 
 class DirUnzipper:
@@ -34,4 +41,12 @@ class DirUnzipper:
         self.src = src
 
     def unzip(self, dst: Path) -> None:
-        return
+        shutil.copytree(src=self.src, dst=dst)
+
+
+class ZipUnzipper:
+    def __init__(self, src: Path):
+        self.src = src
+
+    def unzip(self, dst: Path) -> None:
+        shutil.unpack_archive(filename=self.src, extract_dir=dst)

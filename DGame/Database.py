@@ -64,7 +64,8 @@ def get_game(name: str) -> Game:
 
 def remove_game(name: str) -> None:
     with sqlalchemy.orm.Session(sql_engine()) as session:
-        game = get_game(name)
+        statement = sqlalchemy.select(Game).where(Game.name == name)
+        game = session.scalar(statement).one()
         session.delete(game)
 
 

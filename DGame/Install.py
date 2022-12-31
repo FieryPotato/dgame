@@ -80,3 +80,9 @@ class ZipUnzipper:
 
     def unzip(self, dst: Path) -> None:
         shutil.unpack_archive(filename=self.src, extract_dir=dst)
+
+
+def uninstall(game_name) -> None:
+    game = Database.get_game(game_name)
+    shutil.rmtree(game.exe_path)
+    Database.remove_game(game_name)

@@ -1,2 +1,11 @@
+from DGame import View
+
+
+def main():
+    app = View.App()
+    app.master.title('DGame')
+    app.mainloop()
+
+
 if __name__ == '__main__':
-    print('No real functionality is yet implemented for DGame.\nWatch this space.')
+    main()

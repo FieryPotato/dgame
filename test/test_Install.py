@@ -1,14 +1,3 @@
-"""
-Expected install flow:
-    1. User clicks 'Install New Game' button
-    2. Dialogue opens -> select path
-    3. Dialogue opens -> Request Name, Version
-    4. Unzipper type is determined
-    5. Installer object is created (including unzipper)
-    5. Unzipper extracts files to /Users/user/Games/ folder
-    6. User selects executable
-    7. Save name, version, path, type to database.
-"""
 from pathlib import Path
 
 import Install
@@ -23,8 +12,12 @@ class TestInstallFunctions:
 
         assert actual == expected
 
+    def test_get_installer(self) -> None:
+        path = Path('test.zip')
+        name = 'Test II: More Testing'
+        version = '1.0'
+        installer = Install.get_installer(path, name, version)
 
-class TestInstaller:
-    def test_installer_app(self) -> None:
-        pass
-
+        assert installer.path == path
+        assert installer.name == name
+        assert installer.version == version

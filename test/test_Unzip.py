@@ -3,6 +3,15 @@ from pathlib import Path
 import Unzip
 
 
+def rm_tree(files):
+    for file in files:
+        if file.is_dir():
+            rm_tree(file.iterdir())
+            file.rmdir()
+        else:
+            file.unlink(missing_ok=True)
+
+
 class TestUnzipFunctions:
     def test_get_unzipper_for_zip(self) -> None:
         path = Path('anything.zip')
@@ -32,8 +41,7 @@ class TestZipUnzipper:
 
     def teardown_method(self, test_method):
         if self.fake_zip.exists():
-            for subfile in self.fake_zip.iterdir():
-                subfile.unlink(missing_ok=True)
+            rm_tree(self.fake_zip.iterdir())
             self.fake_zip.rmdir()
 
     def test_unzip(self):
@@ -54,8 +62,7 @@ class TestDirUnzipper:
 
     def teardown_method(self, test_method):
         if self.fake_dir.exists():
-            for subfile in self.fake_dir.iterdir():
-                subfile.unlink(missing_ok=True)
+            rm_tree(self.fake_dir.iterdir())
             self.fake_dir.rmdir()
 
     def test_unzip(self):
@@ -65,3 +72,20 @@ class TestDirUnzipper:
         assert self.fake_dir.exists()
         assert self.fake_text.exists()
         assert self.fake_rdme.exists()
+
+
+class TestAppUnzipper:
+    mocks = Path('mocks')
+    fake_app = mocks / 'fake_app.app'
+    app_file = mocks / 'fake_application.app'
+
+    def teardown_method(self, test_method):
+        if self.fake_app.exists():
+            rm_tree(self.fake_app.iterdir())
+            self.fake_app.rmdir()
+
+    def test_unzip(self):
+        unzipper = Unzip.DirUnzipper(src=self.app_file)
+        unzipper.unzip(self.fake_app)
+
+        assert self.fake_app.exists()

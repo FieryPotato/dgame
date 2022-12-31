@@ -18,7 +18,6 @@ class Unzipper(Protocol):
 
 def get_unzipper(src: Path) -> Unzipper:
     file_types = {
-        '.app': AppUnzipper,
         '.zip': ZipUnzipper
     }
     if (suffix := src.suffix) in file_types:
@@ -26,14 +25,6 @@ def get_unzipper(src: Path) -> Unzipper:
     else:
         unzipper = DirUnzipper
     return unzipper(src=src)
-
-
-class AppUnzipper:
-    def __init__(self, src: Path):
-        self.src = src
-
-    def unzip(self) -> None:
-        pass
 
 
 class DirUnzipper:

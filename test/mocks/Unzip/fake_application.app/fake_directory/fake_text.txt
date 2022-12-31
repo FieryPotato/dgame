@@ -1,9 +1,0 @@
-This is a text file 
-with
-multiple
-lines
-
-including whitespace
-
-
-!@#$% and ∃ non-ascii characters

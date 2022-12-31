@@ -31,7 +31,7 @@ class TestUnzipFunctions:
     def test_get_unzipper_for_app(self) -> None:
         path = Path('myApp.app')
         actual = Unzip.get_unzipper(path)
-        assert type(actual) == Unzip.AppUnzipper
+        assert type(actual) == Unzip.DirUnzipper
         assert actual.src == path
 
 

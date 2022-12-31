@@ -5,8 +5,6 @@ from tkinter import filedialog as fd
 import Database
 import Unzip
 
-from Unzip import Unzipper
-
 
 class Installer:
     ask_path_title = 'Select Game\'s main executable.'
@@ -15,7 +13,7 @@ class Installer:
         self.path = path
         self.name = name
         self.version = version
-        self.unzipper: Unzipper = Unzip.get_unzipper(path)
+        self.unzipper: Unzip.Unzipper = Unzip.get_unzipper(path)
         self.dst = Database.GAMES / self.name
 
     def install(self) -> None:

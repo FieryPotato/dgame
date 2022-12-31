@@ -29,19 +29,18 @@ def sql_engine():
     return sqlalchemy.create_engine(ENGINE_PATH, echo=True, future=True)
 
 
-def add_game(name: str, version: str, exe_path: str, exe_type: str) -> None:
+def add_game(name: str, version: str, exe_path: str) -> None:
     with sqlalchemy.orm.Session(sql_engine()) as session:
         new_game = Game(
             name=name,
             version=version,
             exe_path=exe_path,
-            exe_type=exe_type
         )
         session.add(new_game)
         session.commit()
 
 
-def update_game(name: str, version: str, exe_path: str, exe_type: str):
+def update_game(name: str, version: str, exe_path: str):
     with sqlalchemy.orm.Session(sql_engine()) as session:
         statement = sqlalchemy.select(Game).where(Game.name == name)
         game = session.scalar(statement).one()
@@ -50,7 +49,6 @@ def update_game(name: str, version: str, exe_path: str, exe_type: str):
         game.name = name
         game.version = version
         game.exe_path = exe_path
-        game.exe_type = exe_type
 
         session.commit()
 
@@ -73,4 +71,3 @@ if not DB_PATH.exists():
     if not GAMES.exists():
         GAMES.mkdir()
     Base.metadata.create_all(sql_engine())
-

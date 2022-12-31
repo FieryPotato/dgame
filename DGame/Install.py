@@ -21,12 +21,12 @@ class Installer:
     def install(self) -> None:
         exe = Path(fd.askopenfilename(initialdir=self.dst, title=self.ask_path_title))
         self.set_permissions()
-        Database.add_game(self.name, self.version, str(exe), exe.suffix)
+        Database.add_game(self.name, self.version, str(exe))
 
     def update(self) -> None:
         exe = Path(fd.askopenfilename(initialdir=self.dst, title=self.ask_path_title))
         self.set_permissions()
-        Database.update_game(self.name, self.version, str(exe), exe.suffix)
+        Database.update_game(self.name, self.version, str(exe))
 
     def set_permissions(self) -> None:
         os.system(f'chmod -R 755 \'{self.dst}\'')

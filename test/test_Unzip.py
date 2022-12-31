@@ -54,6 +54,15 @@ class TestZipUnzipper:
         assert self.fake_text.exists()
         assert self.fake_rdme.exists()
 
+    def test_unzip_allows_overwriting(self):
+        unzipper = Unzip.ZipUnzipper(src=self.zip_file)
+        unzipper.unzip(self.fake_zip)
+        unzipper.unzip(self.fake_zip)
+
+        assert self.fake_zip.exists()
+        assert self.fake_text.exists()
+        assert self.fake_rdme.exists()
+
 
 class TestDirUnzipper:
     fake_dir = MOCKS / 'fake_dir'
@@ -74,9 +83,21 @@ class TestDirUnzipper:
         assert self.fake_text.exists()
         assert self.fake_rdme.exists()
 
+    def test_unzip_allows_overwriting(self):
+        unzipper = Unzip.DirUnzipper(src=self.dir_file)
+        unzipper.unzip(self.fake_dir)
+        unzipper.unzip(self.fake_dir)
+
+        assert self.fake_dir.exists()
+        assert self.fake_text.exists()
+        assert self.fake_rdme.exists()
+
 
 class TestAppUnzipper:
     fake_app = MOCKS / 'fake_app.app'
+    fake_text = fake_app / 'fake_text.txt'
+    fake_readme = fake_app / 'fake_readme.md'
+    fake_zip = fake_app / 'fake_archive.zip'
     app_file = MOCKS / 'fake_application.app'
 
     def teardown_method(self, test_method):
@@ -89,3 +110,16 @@ class TestAppUnzipper:
         unzipper.unzip(self.fake_app)
 
         assert self.fake_app.exists()
+        assert self.fake_text.exists()
+        assert self.fake_readme.exists()
+        assert self.fake_zip.exists()
+
+    def test_unzip_allows_overwriting(self):
+        unzipper = Unzip.DirUnzipper(src=self.app_file)
+        unzipper.unzip(self.fake_app)
+        unzipper.unzip(self.fake_app)
+
+        assert self.fake_app.exists()
+        assert self.fake_text.exists()
+        assert self.fake_readme.exists()
+        assert self.fake_zip.exists()

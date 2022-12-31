@@ -32,7 +32,7 @@ class DirUnzipper:
         self.src = src
 
     def unzip(self, dst: Path) -> None:
-        shutil.copytree(src=self.src, dst=dst)
+        shutil.copytree(src=self.src, dst=dst, dirs_exist_ok=True)
 
 
 class ZipUnzipper:

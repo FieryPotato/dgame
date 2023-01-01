@@ -2,7 +2,7 @@ from DGame import View
 
 
 def main():
-    app = View.App()
+    app = View.MainWindow()
     app.master.title('DGame')
     app.mainloop()
 

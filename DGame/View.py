@@ -1,25 +1,28 @@
 import tkinter as tk
 
+import Controller
 
-class App(tk.Frame):
-    def __init__(self, master=None):
+
+class MainWindow(tk.Frame):
+    def __init__(self, controller: Controller, master=None):
         super().__init__(master)
+        self.controller = controller
         self.pack()
 
-        self.entrythingy = tk.Entry()
-        self.entrythingy.pack()
+        self.game_list_var = self.controller.get_game_names()
+        self.game_list = tk.Listbox(master=self, listvariable=self.game_list_var)
 
-        # Create the application variable.
-        self.contents = tk.StringVar()
-        # Set it to some value.
-        self.contents.set("this is a variable")
-        # Tell the entry widget to watch this variable.
-        self.entrythingy["textvariable"] = self.contents
+        # self.entrythingy = tk.Entry()
+        # self.entrythingy.pack()
 
-        # Define a callback for when the user hits return.
-        # It prints the current value of the variable.
-        self.entrythingy.bind('<Key-Return>', self.print_contents)
+        # # Create the application variable.
+        # self.contents = tk.StringVar()
+        # # Set it to some value.
+        # self.contents.set("this is a variable")
+        # # Tell the entry widget to watch this variable.
+        # self.entrythingy["textvariable"] = self.contents
 
-    def print_contents(self, event):
-        print("Hi. The current entry content is:",
-              self.contents.get())
+        # # Define a callback for when the user hits return.
+        # # It prints the current value of the variable.
+        # self.entrythingy.bind('<Key-Return>', self.print_contents)
+

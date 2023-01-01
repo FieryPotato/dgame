@@ -67,6 +67,15 @@ def remove_game(name: str) -> None:
         session.delete(game)
 
 
+def request_column(column: str) -> list[str]:
+    if column not in {'name', 'version', 'exe_path', 'exe_type'}:
+        raise ValueError(f'Requested column \'{column}\' not in database.')
+    with sqlalchemy.orm.Session(sql_engine()) as session:
+        statement = sqlalchemy.select(getattr(Game, column))
+        games: list[str] = session.scalar(statement).fetchall()
+    return games
+
+
 if not DB_PATH.exists():
     if not GAMES.exists():
         GAMES.mkdir()

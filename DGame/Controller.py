@@ -2,5 +2,5 @@ import Database
 
 
 class Controller:
-    def get_game_names(self):
-        return Database.request_column('name')
+    def get_game_names(self) -> list[str]:
+        return Database.get_column('name')

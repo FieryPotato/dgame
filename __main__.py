@@ -1,8 +1,10 @@
+from Controller import Controller
 from DGame import View
 
 
 def main():
-    app = View.MainWindow()
+    controller = Controller()
+    app = View.MainWindow(controller)
     app.master.title('DGame')
     app.mainloop()
 

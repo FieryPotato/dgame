@@ -9,8 +9,9 @@ class MainWindow(tk.Frame):
         self.controller = controller
         self.pack()
 
-        self.game_list_var = self.controller.get_game_names()
-        self.game_list = tk.Listbox(master=self, listvariable=self.game_list_var)
+        self.game_list_var = tk.Variable(value=self.controller.get_game_names())
+        self.game_list = tk.Listbox(master=self, listvariable=self.game_list_var, height=16)
+        self.game_list.pack(side=tk.LEFT)
 
         # self.entrythingy = tk.Entry()
         # self.entrythingy.pack()

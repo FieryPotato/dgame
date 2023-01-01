@@ -45,6 +45,9 @@ launchers = {
 
 def get_launcher(game_name: str) -> Launcher:
     game = Database.get_game(game_name)
+    if game is None:
+        print('No game was launched.')
+        return
     exe_path = game.exe_path
     if (extension := exe_path.suffix) in launchers:
         launcher = launchers[extension]

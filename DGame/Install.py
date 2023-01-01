@@ -84,5 +84,8 @@ class ZipUnzipper:
 
 def uninstall(game_name) -> None:
     game = Database.get_game(game_name)
+    if game is None:
+        print('No game was removed.')
+        return
     shutil.rmtree(game.exe_path)
     Database.remove_game(game_name)

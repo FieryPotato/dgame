@@ -1,11 +1,13 @@
-from Controller import Controller
-from DGame import View
+from DGame.Model import Model
+from DGame.View import View
+from DGame.Controller import Controller
 
 
 def main():
-    controller = Controller()
-    app = View.MainWindow(controller)
-    app.master.title('DGame')
+    model = Model()
+    view = View()
+    controller = Controller(model, view)
+    app = controller.main_window()
     app.mainloop()
 
 

@@ -11,22 +11,18 @@ import Database
 class Installer:
     ask_path_title = 'Select Game\'s main executable.'
 
-    def __init__(self, path: Path, name: str, version: str):
-        self.path = path
+    def __init__(self, name: str, version: str, path: Path):
+        self.path = path / name
         self.name = name
         self.version = version
         self.unzipper: Unzipper = get_unzipper(path)
         self.dst = Database.GAMES / self.name
 
     def install(self) -> None:
+        self.unzipper.unzip(self.dst)
         exe = Path(fd.askopenfilename(initialdir=self.dst, title=self.ask_path_title))
         self.set_permissions()
         Database.add_game(self.name, self.version, str(exe))
-
-    def update(self) -> None:
-        exe = Path(fd.askopenfilename(initialdir=self.dst, title=self.ask_path_title))
-        self.set_permissions()
-        Database.update_game(self.name, self.version, str(exe))
 
     def set_permissions(self) -> None:
         os.system(f'chmod -R 755 \'{self.dst}\'')
@@ -38,8 +34,10 @@ def get_path() -> Path:
     return Path(path)
 
 
-def get_installer(path: Path, name: str, version: str) -> Installer:
-    return Installer(path=path, name=name, version=version)
+def get_installer(name: str, version: str, path: Path | str) -> Installer:
+    if not isinstance(path, Path):
+        path = Path(path)
+    return Installer(name=name, version=version, path=path)
 
 
 class Unzipper(Protocol):

@@ -7,6 +7,10 @@ class View(tk.Tk):
         self.main_frame = MainWindow(self)
         self.install_frame = InstallWindow(self)
         self.confirm_uninstall = ConfirmUninstallWindow(self)
+        self.confirm_install = ConfirmInstallWindow(self)
+
+        self.frames = (self.main_frame, self.install_frame,
+                       self.confirm_uninstall, self.confirm_install)
 
 
 class InstallWindow(tk.Frame):
@@ -22,9 +26,17 @@ class InstallWindow(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
 
+        # Main Buttons Container
+        self.buttons_container = tk.Frame(master=self)
+        self.buttons_container.pack(side=tk.BOTTOM)
+
         # Cancel button (return to main screen)
-        self.cancel_button = tk.Button(master=self, text='Cancel')
-        self.cancel_button.pack(side=tk.BOTTOM)
+        self.cancel_button = tk.Button(master=self.buttons_container, text='Cancel')
+        self.cancel_button.pack(side=tk.LEFT)
+
+        # Install button (return to main screen)
+        self.install_button = tk.Button(master=self.buttons_container, text='Install')
+        self.install_button.pack(side=tk.RIGHT)
 
         # Name field
         self.name_field_var = tk.StringVar(value=self.name_field_default)
@@ -70,6 +82,8 @@ class InstallWindow(tk.Frame):
 
 
 class ConfirmUninstallWindow(tk.Frame):
+    defaults = {}
+
     def __init__(self, master=None):
         super().__init__(master)
 
@@ -77,7 +91,37 @@ class ConfirmUninstallWindow(tk.Frame):
         self.cancel_button.pack(side=tk.BOTTOM)
 
 
+class ConfirmInstallWindow(tk.Frame):
+    defaults = {}
+
+    def __init__(self, master=None):
+        super().__init__(master)
+
+        # Explanation Label
+        self.explanation_var = tk.StringVar()
+        self.explanation_label = tk.Label(master=self,
+                                          textvariable=self.explanation_var)
+        self.explanation_label.pack(side=tk.TOP)
+
+        # Button Frame
+        self.button_frame = tk.Frame(master=self)
+        self.button_frame.pack(side=tk.BOTTOM)
+
+        # Continue Button
+        self.continue_button = tk.Button(master=self.button_frame, text='Continue')
+        self.continue_button.pack(side=tk.RIGHT)
+
+        # Cancel Button
+        self.cancel_button = tk.Button(master=self.button_frame, text='Cancel')
+        self.continue_button.pack(side=tk.LEFT)
+
+        # Confirm_var
+        self.confirm_var = tk.BooleanVar()
+
+
 class MainWindow(tk.Frame):
+    defaults = {}
+
     def __init__(self, master=None):
         super().__init__(master)
 

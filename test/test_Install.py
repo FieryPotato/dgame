@@ -16,7 +16,7 @@ class TestInstallFunctions:
         path = Path('test.zip')
         name = 'Test II: More Testing'
         version = '1.0'
-        installer = Install.get_installer(path, name, version)
+        installer = Install.get_installer(name, version, path)
 
         assert installer.path == path
         assert installer.name == name

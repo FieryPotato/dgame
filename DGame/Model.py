@@ -3,6 +3,8 @@ import Launch
 
 
 class Model:
+    DownloadsFolder = Database.DOWNLOADS
+
     def read_game_names(self) -> list[str]:
         return Database.get_column('name')
 
